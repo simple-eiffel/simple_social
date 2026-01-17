@@ -1,0 +1,19 @@
+# EiffelStudio
+EIFGENs/
+*.rc
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*~
+
+# IDE
+.vs/
+.idea/
+
+# Data files that might contain secrets
+data/
+config/
+*.db

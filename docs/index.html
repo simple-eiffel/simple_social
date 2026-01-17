@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>simple_social - Eiffel Library Documentation</title>
+    <style>
+        :root { --primary: #2563eb; --secondary: #1e40af; --bg: #f8fafc; --text: #1e293b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 3rem 2rem; text-align: center; }
+        header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tagline { opacity: 0.9; font-size: 1.2rem; margin-bottom: 1rem; }
+        .badges { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+        .badge { padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 500; }
+        .badge-version { background: #22c55e; }
+        .badge-license { background: #eab308; color: #1e293b; }
+        nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem; position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+        nav a { color: var(--text); text-decoration: none; font-weight: 500; }
+        nav a:hover { color: var(--primary); }
+        main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        section { background: white; border-radius: 0.5rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        h2 { color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+        h3 { margin: 1.5rem 0 0.75rem; }
+        pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9rem; }
+        .inline-code { background: #e2e8f0; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; font-weight: 600; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .feature-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; }
+        .feature-card h4 { color: var(--primary); margin-bottom: 0.5rem; }
+        footer { text-align: center; padding: 2rem; color: #64748b; border-top: 1px solid #e2e8f0; }
+        .keyword { color: #c084fc; }
+        .type { color: #22d3ee; }
+        .string { color: #4ade80; }
+        .comment { color: #64748b; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>simple_social</h1>
+        <p class="tagline">Social media monitoring and engagement assistant for Eiffel</p>
+        <div class="badges">
+            <span class="badge badge-version">v0.1.0</span>
+            <span class="badge badge-license">MIT</span>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#quick-start">Quick Start</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#api">API Reference</a></li>
+            <li><a href="https://github.com/simple-eiffel/simple_social">GitHub</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>
+                <strong>simple_social</strong> provides a SCOOP-powered library for discovering, drafting,
+                and tracking social media opportunities. It helps monitor discussions about Eiffel across
+                multiple platforms, analyze relevance using AI, and draft engagement responses.
+            </p>
+            <p style="margin-top: 1rem;">
+                Part of the <strong>simple_*</strong> ecosystem of focused, single-purpose Eiffel libraries
+                with full Design by Contract support.
+            </p>
+        </section>
+
+        <section id="quick-start">
+            <h2>Quick Start</h2>
+            <h3>Installation</h3>
+            <p>Set environment variable and add to your ECF:</p>
+<pre><code><span class="comment">-- Set SIMPLE_EIFFEL=D:\prod</span>
+&lt;library name="simple_social" location="$SIMPLE_EIFFEL/simple_social/simple_social.ecf"/&gt;</code></pre>
+
+            <h3>Architecture</h3>
+<pre><code>simple_social/         <span class="comment">-- this library (public, GitHub)</span>
+├── src/
+│   ├── core/          <span class="comment">-- Data classes, database, settings</span>
+│   ├── platforms/     <span class="comment">-- Reddit, SO, HN, GitHub, Dev.to APIs</span>
+│   ├── agents/        <span class="comment">-- SCOOP agents for scanning/analysis</span>
+│   ├── web/           <span class="comment">-- Dashboard HTTP handlers</span>
+│   └── cli/           <span class="comment">-- Command-line interface</span>
+
+your_instance/         <span class="comment">-- private (never commit)</span>
+├── config/
+│   └── settings.json  <span class="comment">-- API keys, SMTP, preferences</span>
+├── data/
+│   └── social.db      <span class="comment">-- SQLite with your data</span>
+└── src/
+    └── social_daemon.e</code></pre>
+
+            <h3>Workflow</h3>
+<pre><code>SCOUT → ANALYZE → DRAFT → REVIEW → POST → MONITOR → RESPOND
+  ↑                         ↓                           ↓
+  └─────────────────────────┴───────────────────────────┘</code></pre>
+        </section>
+
+        <section id="features">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Multi-Platform Scout</h4>
+                    <p>Search Reddit, Stack Overflow, HN, GitHub, Dev.to for relevant discussions.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>AI Analyzer</h4>
+                    <p>Relevance scoring and draft generation using AI.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Engagement Monitor</h4>
+                    <p>Track posted responses for replies.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Web Dashboard</h4>
+                    <p>Local UI for reviewing opportunities.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Design by Contract</h4>
+                    <p>Full preconditions, postconditions, and invariants.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>SCOOP Agents</h4>
+                    <p>Concurrent scanning and analysis.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="platforms">
+            <h2>Platforms Supported</h2>
+            <table>
+                <thead>
+                    <tr><th>Platform</th><th>Search</th><th>Monitor</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Reddit</td><td>Yes</td><td>Yes</td><td>OAuth2 required</td></tr>
+                    <tr><td>Stack Overflow</td><td>Yes</td><td>Yes</td><td>Public API</td></tr>
+                    <tr><td>Hacker News</td><td>Yes</td><td>Yes</td><td>Algolia API</td></tr>
+                    <tr><td>GitHub Discussions</td><td>Yes</td><td>Yes</td><td>Token required</td></tr>
+                    <tr><td>Dev.to</td><td>Yes</td><td>Yes</td><td>API key optional</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="api">
+            <h2>API Reference</h2>
+            <h3>Core Classes</h3>
+            <table>
+                <thead>
+                    <tr><th>Class</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code class="inline-code">SOCIAL_PLATFORM</code></td><td>Base class for platform adapters</td></tr>
+                    <tr><td><code class="inline-code">SOCIAL_OPPORTUNITY</code></td><td>Discovered discussion to engage with</td></tr>
+                    <tr><td><code class="inline-code">SOCIAL_DRAFT</code></td><td>AI-generated response draft</td></tr>
+                    <tr><td><code class="inline-code">SOCIAL_ENGAGEMENT</code></td><td>Posted response being monitored</td></tr>
+                    <tr><td><code class="inline-code">SOCIAL_REPLY</code></td><td>Reply received on engagement</td></tr>
+                    <tr><td><code class="inline-code">SOCIAL_DATABASE</code></td><td>SQLite persistence layer</td></tr>
+                    <tr><td><code class="inline-code">SOCIAL_SETTINGS</code></td><td>Configuration management</td></tr>
+                </tbody>
+            </table>
+
+            <h3>SCOOP Agents</h3>
+            <table>
+                <thead>
+                    <tr><th>Class</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code class="inline-code">SOCIAL_SCOUT</code></td><td>Parallel platform scanning</td></tr>
+                    <tr><td><code class="inline-code">SOCIAL_ANALYZER</code></td><td>AI relevance scoring</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="dependencies">
+            <h2>Dependencies</h2>
+            <ul>
+                <li><strong>simple_http</strong> - Dashboard and API calls</li>
+                <li><strong>simple_ai_client</strong> - Relevance scoring, drafting</li>
+                <li><strong>simple_sql</strong> - SQLite persistence</li>
+                <li><strong>simple_json</strong> - API responses</li>
+                <li><strong>simple_datetime</strong> - Timestamp handling</li>
+                <li><strong>simple_process</strong> - Daemon support</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>simple_social</strong> is part of the <a href="https://github.com/simple-eiffel">simple_*</a> ecosystem</p>
+        <p>Copyright &copy; 2024-2025 Larry Rix. MIT License.</p>
+    </footer>
+</body>
+</html>
