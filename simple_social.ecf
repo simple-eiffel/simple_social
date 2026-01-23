@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-22-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-22-0 http://www.eiffel.com/developers/xml/configuration-1-22-0.xsd" name="simple_social" uuid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890" library_target="simple_social">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-22-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-22-0 http://www.eiffel.com/developers/xml/configuration-1-22-0.xsd" name="simple_social" uuid="6c223f2e-5c1b-46d6-9180-89fd6cb3eb0c" library_target="simple_social">
 	<description>Social media monitoring and engagement assistant library</description>
 	<target name="simple_social">
 		<root all_classes="true"/>
@@ -27,8 +27,9 @@
 		<cluster name="cli" location=".\src\cli\"/>
 	</target>
 	<target name="social_tests" extends="simple_social">
-		<root class="SOCIAL_TESTS" feature="make"/>
+		<root class="TEST_APP" feature="make"/>
 		<library name="testing" location="$ISE_LIBRARY\library\testing\testing.ecf"/>
+				<library name="simple_testing" location="$SIMPLE_EIFFEL\simple_testing\simple_testing.ecf"/>
 		<cluster name="tests" location=".\testing\"/>
 	</target>
 </system>
