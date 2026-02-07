@@ -17,3 +17,5 @@ EIFGENs/
 data/
 config/
 *.db
+*.melted
+*.epr
