@@ -64,7 +64,7 @@ feature -- Opportunity Operations
 			sql: STRING_8
 		do
 			sql := "INSERT INTO opportunities (platform, url, title, snippet, relevance_score, status, discovered_at, last_checked) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-			execute_with_args (sql, <<a_opp.platform, a_opp.url.to_string_8, a_opp.title.to_string_8, a_opp.snippet.to_string_8, a_opp.relevance_score, a_opp.status, a_opp.discovered_at.out, a_opp.last_checked.out>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<a_opp.platform, a_opp.url.to_string_8, a_opp.title.to_string_8, a_opp.snippet.to_string_8, a_opp.relevance_score, a_opp.status, a_opp.discovered_at.out, a_opp.last_checked.out>>)
 			Result := last_insert_rowid.to_integer_32
 			if Result > 0 then
 				a_opp.set_id (Result)
@@ -81,7 +81,7 @@ feature -- Opportunity Operations
 			sql: STRING_8
 		do
 			sql := "UPDATE opportunities SET status = ?, relevance_score = ?, snippet = ?, last_checked = ? WHERE id = ?"
-			execute_with_args (sql, <<a_opp.status, a_opp.relevance_score, a_opp.snippet.to_string_8, a_opp.last_checked.out, a_opp.id>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<a_opp.status, a_opp.relevance_score, a_opp.snippet.to_string_8, a_opp.last_checked.out, a_opp.id>>)
 		end
 
 	opportunity_exists (a_url: READABLE_STRING_GENERAL): BOOLEAN
@@ -89,7 +89,7 @@ feature -- Opportunity Operations
 		local
 			res: SIMPLE_SQL_RESULT
 		do
-			res := query_with_args ("SELECT COUNT(*) as cnt FROM opportunities WHERE url = ?", <<a_url.to_string_8>>)
+			res := query_with_args ("SELECT COUNT(*) as cnt FROM opportunities WHERE url = ?", {ARRAY [detachable ANY]} <<a_url.to_string_8>>)
 			if not res.rows.is_empty and then attached res.rows.first as row then
 				Result := row.integer_value ("cnt") > 0
 			end
@@ -101,7 +101,7 @@ feature -- Opportunity Operations
 			res: SIMPLE_SQL_RESULT
 		do
 			create Result.make (20)
-			res := query_with_args ("SELECT id, platform, url, title, snippet, relevance_score, status, discovered_at, last_checked FROM opportunities WHERE status = ? ORDER BY relevance_score DESC, discovered_at DESC", <<a_status>>)
+			res := query_with_args ("SELECT id, platform, url, title, snippet, relevance_score, status, discovered_at, last_checked FROM opportunities WHERE status = ? ORDER BY relevance_score DESC, discovered_at DESC", {ARRAY [detachable ANY]} <<a_status>>)
 			across res.rows as row loop
 				Result.extend (row_to_opportunity (row))
 			end
@@ -127,7 +127,7 @@ feature -- Opportunity Operations
 			res: SIMPLE_SQL_RESULT
 		do
 			create Result.make (a_limit)
-			res := query_with_args ("SELECT id, platform, url, title, snippet, relevance_score, status, discovered_at, last_checked FROM opportunities ORDER BY discovered_at DESC LIMIT ?", <<a_limit>>)
+			res := query_with_args ("SELECT id, platform, url, title, snippet, relevance_score, status, discovered_at, last_checked FROM opportunities ORDER BY discovered_at DESC LIMIT ?", {ARRAY [detachable ANY]} <<a_limit>>)
 			across res.rows as row loop
 				Result.extend (row_to_opportunity (row))
 			end
@@ -143,7 +143,7 @@ feature -- Draft Operations
 			sql: STRING_8
 		do
 			sql := "INSERT INTO drafts (opportunity_id, content, original_content, status, created_at, modified_at, generation_count) VALUES (?, ?, ?, ?, ?, ?, ?)"
-			execute_with_args (sql, <<a_draft.opportunity_id, a_draft.content.to_string_8, a_draft.original_content.to_string_8, a_draft.status, a_draft.created_at.out, a_draft.modified_at.out, a_draft.generation_count>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<a_draft.opportunity_id, a_draft.content.to_string_8, a_draft.original_content.to_string_8, a_draft.status, a_draft.created_at.out, a_draft.modified_at.out, a_draft.generation_count>>)
 			Result := last_insert_rowid.to_integer_32
 			if Result > 0 then
 				a_draft.set_id (Result)
@@ -158,7 +158,7 @@ feature -- Draft Operations
 			sql: STRING_8
 		do
 			sql := "UPDATE drafts SET content = ?, status = ?, modified_at = ?, generation_count = ? WHERE id = ?"
-			execute_with_args (sql, <<a_draft.content.to_string_8, a_draft.status, a_draft.modified_at.out, a_draft.generation_count, a_draft.id>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<a_draft.content.to_string_8, a_draft.status, a_draft.modified_at.out, a_draft.generation_count, a_draft.id>>)
 		end
 
 	drafts_for_opportunity (a_opp_id: INTEGER): ARRAYED_LIST [SOCIAL_DRAFT]
@@ -169,7 +169,7 @@ feature -- Draft Operations
 			res: SIMPLE_SQL_RESULT
 		do
 			create Result.make (3)
-			res := query_with_args ("SELECT id, opportunity_id, content, original_content, status, created_at, modified_at, generation_count FROM drafts WHERE opportunity_id = ? ORDER BY created_at DESC", <<a_opp_id>>)
+			res := query_with_args ("SELECT id, opportunity_id, content, original_content, status, created_at, modified_at, generation_count FROM drafts WHERE opportunity_id = ? ORDER BY created_at DESC", {ARRAY [detachable ANY]} <<a_opp_id>>)
 			across res.rows as row loop
 				Result.extend (row_to_draft (row))
 			end
@@ -197,7 +197,7 @@ feature -- Engagement Operations
 			sql: STRING_8
 		do
 			sql := "INSERT INTO engagements (opportunity_id, draft_id, post_url, reply_count, unread_replies, posted_at, last_checked, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-			execute_with_args (sql, <<a_eng.opportunity_id, a_eng.draft_id, a_eng.post_url.to_string_8, a_eng.reply_count, a_eng.unread_replies, a_eng.posted_at.out, a_eng.last_checked.out, if a_eng.is_active then 1 else 0 end>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<a_eng.opportunity_id, a_eng.draft_id, a_eng.post_url.to_string_8, a_eng.reply_count, a_eng.unread_replies, a_eng.posted_at.out, a_eng.last_checked.out, if a_eng.is_active then 1 else 0 end>>)
 			Result := last_insert_rowid.to_integer_32
 			if Result > 0 then
 				a_eng.set_id (Result)
@@ -212,7 +212,7 @@ feature -- Engagement Operations
 			sql: STRING_8
 		do
 			sql := "UPDATE engagements SET reply_count = ?, unread_replies = ?, last_checked = ?, is_active = ? WHERE id = ?"
-			execute_with_args (sql, <<a_eng.reply_count, a_eng.unread_replies, a_eng.last_checked.out, if a_eng.is_active then 1 else 0 end, a_eng.id>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<a_eng.reply_count, a_eng.unread_replies, a_eng.last_checked.out, if a_eng.is_active then 1 else 0 end, a_eng.id>>)
 		end
 
 	active_engagements: ARRAYED_LIST [SOCIAL_ENGAGEMENT]
@@ -249,7 +249,7 @@ feature -- Reply Operations
 			sql: STRING_8
 		do
 			sql := "INSERT INTO replies (engagement_id, reply_url, author, content, is_read, needs_response, discovered_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
-			execute_with_args (sql, <<a_reply.engagement_id, a_reply.reply_url.to_string_8, a_reply.author.to_string_8, a_reply.content.to_string_8, if a_reply.is_read then 1 else 0 end, if a_reply.needs_response then 1 else 0 end, a_reply.discovered_at.out>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<a_reply.engagement_id, a_reply.reply_url.to_string_8, a_reply.author.to_string_8, a_reply.content.to_string_8, if a_reply.is_read then 1 else 0 end, if a_reply.needs_response then 1 else 0 end, a_reply.discovered_at.out>>)
 			Result := last_insert_rowid.to_integer_32
 			if Result > 0 then
 				a_reply.set_id (Result)
@@ -264,7 +264,7 @@ feature -- Reply Operations
 			sql: STRING_8
 		do
 			sql := "UPDATE replies SET is_read = ?, needs_response = ? WHERE id = ?"
-			execute_with_args (sql, <<if a_reply.is_read then 1 else 0 end, if a_reply.needs_response then 1 else 0 end, a_reply.id>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<if a_reply.is_read then 1 else 0 end, if a_reply.needs_response then 1 else 0 end, a_reply.id>>)
 		end
 
 	replies_for_engagement (a_eng_id: INTEGER): ARRAYED_LIST [SOCIAL_REPLY]
@@ -275,7 +275,7 @@ feature -- Reply Operations
 			res: SIMPLE_SQL_RESULT
 		do
 			create Result.make (10)
-			res := query_with_args ("SELECT id, engagement_id, reply_url, author, content, is_read, needs_response, discovered_at FROM replies WHERE engagement_id = ? ORDER BY discovered_at DESC", <<a_eng_id>>)
+			res := query_with_args ("SELECT id, engagement_id, reply_url, author, content, is_read, needs_response, discovered_at FROM replies WHERE engagement_id = ? ORDER BY discovered_at DESC", {ARRAY [detachable ANY]} <<a_eng_id>>)
 			across res.rows as row loop
 				Result.extend (row_to_reply (row))
 			end
@@ -349,7 +349,7 @@ feature -- Resource Operations
 		do
 			create dt.make_now_utc
 			sql := "INSERT OR IGNORE INTO resources (url, title, description, category, keywords, source, quality_score, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-			execute_with_args (sql, <<a_url, a_title, a_description, a_category, a_keywords, a_source, a_quality, dt.out>>)
+			execute_with_args (sql, {ARRAY [detachable ANY]} <<a_url, a_title, a_description, a_category, a_keywords, a_source, a_quality, dt.out>>)
 			Result := last_insert_rowid.to_integer_32
 		end
 
@@ -378,7 +378,7 @@ feature -- Resource Operations
 			res: SIMPLE_SQL_RESULT
 		do
 			create Result.make (20)
-			res := query_with_args ("SELECT id, url, title, description, quality_score FROM resources WHERE is_active = 1 AND category = ? ORDER BY quality_score DESC", <<a_category>>)
+			res := query_with_args ("SELECT id, url, title, description, quality_score FROM resources WHERE is_active = 1 AND category = ? ORDER BY quality_score DESC", {ARRAY [detachable ANY]} <<a_category>>)
 			across res.rows as row loop
 				Result.extend ([
 					row.integer_value ("id"),
