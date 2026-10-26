@@ -13,7 +13,6 @@
 		</capability>
 		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
 		<library name="time" location="$ISE_LIBRARY\library\time\time.ecf"/>
-		<library name="net" location="$ISE_LIBRARY\library\net\net.ecf"/>
 		<library name="simple_http" location="$SIMPLE_EIFFEL\simple_http\simple_http.ecf"/>
 		<library name="simple_json" location="$SIMPLE_EIFFEL\simple_json\simple_json.ecf"/>
 		<library name="simple_sql" location="$SIMPLE_EIFFEL\simple_sql\simple_sql.ecf"/>
