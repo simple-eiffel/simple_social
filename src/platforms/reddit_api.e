@@ -262,7 +262,7 @@ feature {NONE} -- Implementation
 			-- Execute command and return output.
 		do
 			process_runner.execute (a_command)
-			if process_runner.was_successful then
+			if process_runner.was_successful and process_runner.last_exit_code = 0 then
 				Result := process_runner.last_output
 			end
 		end
